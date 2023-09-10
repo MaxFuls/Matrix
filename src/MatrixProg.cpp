@@ -3,31 +3,57 @@
 #include <limits>
 namespace MatrixProg {
 
-	void MatrixInput() {
+	void MatrixInput(MatrixElements* ptr, int lines, int columns) {
+		
+		try {
+			for (int i{ 0 }; i < lines; i++) {
+				int variable;
+				for (int j{ 0 }; j < columns; j++) {
+					std::cout << "Enter value " << std::endl;
+					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+					if (variable) {
 
-		int  m,  n;
-		std::cout << "Enter number of lines" << std::endl;
-		m = NumInput<int>(0, std::numeric_limits<int>::max());
-		std::cout << "Enter number of columns" << std::endl;
-		n = NumInput<int>(0, std::numeric_limits<int>::max());
-		for (int i{ 0 }; i < m; i++) {
-			for (int j{ 0 }; j < n; j++) {
+						ptr = addElement(i, j, variable, ptr);
+					}
 
+				}
 			}
+		}
+		catch (...) {
+
+			throw;
+		}
+
+	}
+	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer) {
+
+		pointer->line = line;
+		pointer->column = column;
+		pointer->value = value;
+		pointer->nextElement = new MatrixElements;
+		return pointer->nextElement;
+
+	}
+	void MatrixOutput(MatrixElements* pointer, int lines, int columns) {
+
+		for (int i{ 0 }; i < lines; i++) {
+			for (int j{ 0 }; j < columns; j++) {
+				if (pointer->line == i && pointer->column == j) {
+					std::cout << pointer->value << "    ";
+					pointer = pointer->nextElement;
+				}
+				else {
+					std::cout << "0    ";
+				}
+			}
+			std::cout << "" << std::endl;
 		}
 
 	}
 
+	void MatrixErase(MatrixElements* pointer) {
 
 
-
-
-
-
-
-
-	void addElement(int line, int column, int value) {
 
 	}
-
 }
