@@ -1,6 +1,16 @@
 #include <iostream>
+#include "MatrixHeader.h"
 
-int main(){
-  std::cout<<"Hello world!"<<std::endl;
-  return 0;
+int main() {
+	MatrixProg::MatrixElements* FirstElement;
+	FirstElement = new MatrixProg::MatrixElements;
+	try
+	{
+		MatrixProg::MatrixInput();
+	}
+	catch (const std::exception&)
+	{
+
+	}
+	return 0;
 }
