@@ -4,15 +4,15 @@
 int main() {
 	MatrixProg::MatrixElements* FirstElement;
 	FirstElement = new MatrixProg::MatrixElements;
-	int  m, n;
-	std::cout << "Enter number of lines" << std::endl;
-	m = MatrixProg::NumInput<int>(0, std::numeric_limits<int>::max());
-	std::cout << "Enter number of columns" << std::endl;
-	n = MatrixProg::NumInput<int>(0, std::numeric_limits<int>::max());
+	int  lines{ 0 }, columns{ 0 };
 	try
 	{
-		MatrixProg::MatrixInput(FirstElement, m, n);
-		MatrixProg::MatrixOutput(FirstElement, m, n);
+		MatrixProg::MatrixInput(FirstElement, lines, columns);
+		MatrixProg::MatrixOutput(FirstElement, lines, columns);
+		int* vector = MatrixProg::CreateVector(FirstElement, lines);
+		for (int i{ 0 }; i < lines; i++) {
+			std::cout << *(vector + i) << std::endl;
+		}
 	}
 	catch (const std::exception&)
 	{

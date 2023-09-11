@@ -3,9 +3,13 @@
 #include <limits>
 namespace MatrixProg {
 
-	void MatrixInput(MatrixElements* ptr, int lines, int columns) {
+	void MatrixInput(MatrixElements* ptr, int& lines, int& columns) {
 		
 		try {
+			std::cout << "Enter number of lines" << std::endl;
+			lines = NumInput<int>(0, std::numeric_limits<int>::max());
+			std::cout << "Enter number of columns" << std::endl;
+			columns = NumInput<int>(0, std::numeric_limits<int>::max());
 			for (int i{ 0 }; i < lines; i++) {
 				int variable;
 				for (int j{ 0 }; j < columns; j++) {
@@ -27,11 +31,16 @@ namespace MatrixProg {
 	}
 	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer) {
 
-		pointer->line = line;
-		pointer->column = column;
-		pointer->value = value;
-		pointer->nextElement = new MatrixElements;
-		return pointer->nextElement;
+		try {
+			pointer->line = line;
+			pointer->column = column;
+			pointer->value = value;
+			pointer->nextElement = new MatrixElements;
+			return pointer->nextElement;
+		}
+		catch (...) {
+			throw;
+		}
 
 	}
 	void MatrixOutput(MatrixElements* pointer, int lines, int columns) {
@@ -55,5 +64,58 @@ namespace MatrixProg {
 
 
 
+	}
+
+	int* CreateVector(MatrixElements* pointer, int lines) {
+
+		try {
+			int* vector;
+			MatrixElements* ptr = pointer->nextElement;
+			int i{ 0 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
+			vector = new int[lines]();
+			while (i < lines) {
+				while (ptr->line == i) {
+					ptr = ptr->nextElement;
+				}
+				while (pointer->line == i) {
+
+					if (pointer->line < lines) {
+						while (ptr->line == i + 1) {
+
+							if (pointer->value == ptr->value) {
+
+								number_of_elements_in_line++;
+							}
+							else if (pointer->value != ptr->value) {
+								number_of_elements++;
+								number_of_elements_in_line++;
+
+							}
+							ptr = ptr->nextElement;
+						}
+					}
+					else {
+						*(vector + i) = 999;
+						break;
+
+					}
+					pointer = pointer->nextElement;
+				}
+				ptr = pointer->nextElement;
+				if (number_of_elements==number_of_elements_in_line) {
+					*(vector + i) = number_of_elements;
+				}
+				else {
+					*(vector + i) = 0;
+				}
+				number_of_elements = 0;
+				number_of_elements_in_line = 0;
+				i++;
+			}
+			return vector;
+		}
+		catch (...) {
+			throw;
+		}
 	}
 }

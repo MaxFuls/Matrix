@@ -30,7 +30,8 @@ namespace MatrixProg {
 		MatrixElements* nextElement = nullptr;
 	};
 	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer);
-	void MatrixInput(MatrixElements* ptr, int lines, int columns);
+	void MatrixInput(MatrixElements* ptr, int& lines, int& columns);
 	void MatrixOutput(MatrixElements* pointer, int lines, int columns);
 	void MatrixErase(MatrixElements* pointer);
+	int* CreateVector(MatrixElements* pointer, int lines);
 }
