@@ -4,18 +4,26 @@
 namespace MatrixProg {
 
 	void MatrixInput(MatrixElements* ptr, int& lines, int& columns) {
-		
+
 		try {
 			std::cout << "Enter number of lines" << std::endl;
 			lines = NumInput<int>(0, std::numeric_limits<int>::max());
 			std::cout << "Enter number of columns" << std::endl;
 			columns = NumInput<int>(0, std::numeric_limits<int>::max());
+			MatrixElements* ptr_source = ptr;
 			for (int i{ 0 }; i < lines; i++) {
 				int variable;
 				for (int j{ 0 }; j < columns; j++) {
 					std::cout << "Enter value " << std::endl;
 					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
-					if (variable) {
+					if (variable && j == columns - 1 && i == lines - 1) {
+
+						ptr->line = i;
+						ptr->column = j;
+						ptr->value = variable;
+						ptr->nextElement = ptr_source;
+					}
+					else if (variable) {
 
 						ptr = addElement(i, j, variable, ptr);
 					}
@@ -45,6 +53,7 @@ namespace MatrixProg {
 	}
 	void MatrixOutput(MatrixElements* pointer, int lines, int columns) {
 
+		std::cout << std::endl << "The matrix is..." << std::endl;
 		for (int i{ 0 }; i < lines; i++) {
 			for (int j{ 0 }; j < columns; j++) {
 				if (pointer->line == i && pointer->column == j) {
@@ -71,45 +80,43 @@ namespace MatrixProg {
 		try {
 			int* vector;
 			MatrixElements* ptr = pointer->nextElement;
+			MatrixElements* ptr_first_line = pointer;
+			MatrixElements* ptr_source = pointer;
 			int i{ 0 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
 			vector = new int[lines]();
+			if (lines == 1) {
+				std::cout << "It is impossible to create vector, using one line" << std::endl;
+				delete[] vector;
+				return nullptr;
+			}
 			while (i < lines) {
-				while (ptr->line == i) {
-					ptr = ptr->nextElement;
-				}
-				while (pointer->line == i) {
 
-					if (pointer->line < lines) {
-						while (ptr->line == i + 1) {
+				while (ptr_source->line == i) {
 
-							if (pointer->value == ptr->value) {
+					while (ptr->line == i) {
 
-								number_of_elements_in_line++;
-							}
-							else if (pointer->value != ptr->value) {
-								number_of_elements++;
-								number_of_elements_in_line++;
+						ptr = ptr->nextElement;
+					}
+					while (ptr->line == i + 1 || ptr->line == 0) {
 
-							}
-							ptr = ptr->nextElement;
+						if (ptr->value == ptr_source->value) {
+
+							number_of_elements_in_line++;
 						}
+						else {
+							number_of_elements++;
+							number_of_elements_in_line++;
+						}
+						ptr = ptr->nextElement;
 					}
-					else {
-						*(vector + i) = 999;
-						break;
-
+					if (number_of_elements == number_of_elements_in_line) {
+						*(vector + i) += 1;
 					}
-					pointer = pointer->nextElement;
+					ptr_source = ptr_source->nextElement;
+					ptr = ptr_source->nextElement;
+					number_of_elements = 0;
+					number_of_elements_in_line = 0;
 				}
-				ptr = pointer->nextElement;
-				if (number_of_elements==number_of_elements_in_line) {
-					*(vector + i) = number_of_elements;
-				}
-				else {
-					*(vector + i) = 0;
-				}
-				number_of_elements = 0;
-				number_of_elements_in_line = 0;
 				i++;
 			}
 			return vector;
@@ -117,5 +124,11 @@ namespace MatrixProg {
 		catch (...) {
 			throw;
 		}
+	}
+	void VectorOutput(int lines, int* vector) {
+
+		std::cout << std::endl << "The vector is..." << std::endl;
+		for (int i{ 0 }; i < lines; i++)
+			std::cout << *(vector + i) << std::endl;
 	}
 }

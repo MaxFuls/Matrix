@@ -10,9 +10,7 @@ int main() {
 		MatrixProg::MatrixInput(FirstElement, lines, columns);
 		MatrixProg::MatrixOutput(FirstElement, lines, columns);
 		int* vector = MatrixProg::CreateVector(FirstElement, lines);
-		for (int i{ 0 }; i < lines; i++) {
-			std::cout << *(vector + i) << std::endl;
-		}
+		MatrixProg::VectorOutput(lines, vector);
 	}
 	catch (const std::exception&)
 	{

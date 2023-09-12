@@ -34,4 +34,5 @@ namespace MatrixProg {
 	void MatrixOutput(MatrixElements* pointer, int lines, int columns);
 	void MatrixErase(MatrixElements* pointer);
 	int* CreateVector(MatrixElements* pointer, int lines);
+	void VectorOutput(int lines, int* vector);
 }
