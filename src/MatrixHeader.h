@@ -35,4 +35,10 @@ namespace MatrixProg {
 	void MatrixErase(MatrixElements* pointer);
 	int* CreateVector(MatrixElements* pointer, int lines);
 	void VectorOutput(int lines, int* vector);
+	void VectorSort(int* pointer, int lenght);
+	void BubbleSortAscending(int* pointer, int length);
+	void BubbleSortDescending(int* pointer, int length);
+	void swap(int* first, int* second);
+	void EraseVector(int* pointer);
+
 }

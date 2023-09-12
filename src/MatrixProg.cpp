@@ -47,6 +47,7 @@ namespace MatrixProg {
 			return pointer->nextElement;
 		}
 		catch (...) {
+			delete pointer->nextElement;
 			throw;
 		}
 
@@ -78,12 +79,10 @@ namespace MatrixProg {
 	int* CreateVector(MatrixElements* pointer, int lines) {
 
 		try {
-			int* vector;
+			int* vector = new int[lines]();
 			MatrixElements* ptr = pointer->nextElement;
-			MatrixElements* ptr_first_line = pointer;
 			MatrixElements* ptr_source = pointer;
 			int i{ 0 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
-			vector = new int[lines]();
 			if (lines == 1) {
 				std::cout << "It is impossible to create vector, using one line" << std::endl;
 				delete[] vector;
@@ -121,14 +120,71 @@ namespace MatrixProg {
 			}
 			return vector;
 		}
-		catch (...) {
+		catch (std::exception) {
+
 			throw;
 		}
 	}
 	void VectorOutput(int lines, int* vector) {
 
-		std::cout << std::endl << "The vector is..." << std::endl;
 		for (int i{ 0 }; i < lines; i++)
 			std::cout << *(vector + i) << std::endl;
+	}
+	void VectorSort(int* pointer, int length) {
+
+		if (*(pointer) > *(pointer + 1)) {
+
+			BubbleSortAscending(pointer, length);
+		}
+		else if (*(pointer) < *(pointer + 1)) {
+
+			BubbleSortDescending(pointer, length);
+		}
+	}
+	void BubbleSortAscending(int* pointer, int length) {
+
+		int i{ 0 }, right_position{ 0 };
+		while (right_position != length - 1) {
+			right_position = 0;
+			while (i < length-1) {
+				if (*(pointer + i) > *(pointer + i + 1)) {
+
+					swap(pointer + i, pointer + i + 1);
+				}
+				else {
+					right_position++;
+				}
+				i++;
+			}
+			i = 0;
+		}
+	}
+	void BubbleSortDescending(int* pointer, int length) {
+
+		int i{ 0 }, right_position{ 0 };
+		while (right_position != length - 1) {
+			right_position = 0;
+			while (i < length - 1) {
+				if (*(pointer + i) < *(pointer + i + 1)) {
+
+					swap(pointer + i, pointer + i + 1);
+				}
+				else {
+					right_position++;
+				}
+				i++;
+			}
+			i = 0;
+		}
+	}
+	void swap(int* first, int* second) {
+		int tmp;
+		tmp = *first;
+		*first = *second;
+		*second = tmp;
+	}
+	void EraseVector(int* pointer) {
+
+		delete[] pointer;
 	}
 }
