@@ -72,8 +72,15 @@ namespace MatrixProg {
 
 	void MatrixErase(MatrixElements* pointer) {
 
+		MatrixElements* ptr1 = pointer->nextElement;
+		MatrixElements* ptr2 = ptr1;
+		while (ptr1->column!=0 && ptr1->line!=0) {
 
-
+			ptr1 = ptr2->nextElement;
+			delete ptr2;
+			ptr2 = ptr1;
+		}
+		delete pointer;
 	}
 
 	int* CreateVector(MatrixElements* pointer, int lines) {
