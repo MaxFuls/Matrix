@@ -14,6 +14,7 @@ namespace MatrixProg {
 			for (int i{ 0 }; i < lines; i++) {
 				int variable;
 				for (int j{ 0 }; j < columns; j++) {
+
 					std::cout << "Enter value " << std::endl;
 					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 					if (variable && j == columns - 1 && i == lines - 1) {
@@ -95,15 +96,18 @@ namespace MatrixProg {
 				delete[] vector;
 				return nullptr;
 			}
+			int j{ 1 };
 			while (i < lines) {
 
+				if (j == lines)
+					j = 0;
 				while (ptr_source->line == i) {
 
 					while (ptr->line == i) {
 
 						ptr = ptr->nextElement;
 					}
-					while (ptr->line == i + 1 || ptr->line == 0) {
+					while (ptr->line == j) {
 
 						if (ptr->value == ptr_source->value) {
 
@@ -123,11 +127,12 @@ namespace MatrixProg {
 					number_of_elements = 0;
 					number_of_elements_in_line = 0;
 				}
-				i++;
+				++i;
+				++j;
 			}
 			return vector;
 		}
-		catch (std::exception) {
+		catch (...) {
 
 			throw;
 		}

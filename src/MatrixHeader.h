@@ -1,6 +1,7 @@
 #include <iostream>
 #include <limits>
 #pragma warning(disable:4996)
+
 namespace MatrixProg {
 
 	template<typename T>
@@ -8,6 +9,8 @@ namespace MatrixProg {
 		T a;
 		while (true) {
 			std::cin >> a;
+			char c;
+			std::cin.get(c);
 			if (std::cin.eof())
 				throw std::runtime_error("Error of input: EOF");
 			else if (std::cin.bad())
@@ -17,10 +20,12 @@ namespace MatrixProg {
 				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			}
-			else if (a > min && a < max)
+			else if (a > min && a < max && (c==' ' || c=='\n'))
 				return a;
-			else
-				std::cout << "Incorrect number. Repeat please" << std::endl;
+			else {
+				std::cout << "Repeat please" << std::endl;
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
 		}
 	}
 	struct MatrixElements {
