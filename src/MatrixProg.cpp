@@ -3,30 +3,26 @@
 #include <limits>
 namespace MatrixProg {
 
-	void MatrixInput(MatrixElements* ptr, int& lines, int& columns) {
+	void MatrixInput(const Matrix& ptr) {
 
 		try {
-			std::cout << "Enter number of lines" << std::endl;
-			lines = NumInput<int>(0, std::numeric_limits<int>::max());
-			std::cout << "Enter number of columns" << std::endl;
-			columns = NumInput<int>(0, std::numeric_limits<int>::max());
-			MatrixElements* ptr_source = ptr;
-			for (int i{ 0 }; i < lines; i++) {
-				int variable;
-				for (int j{ 0 }; j < columns; j++) {
+			int variable;
+			MatrixElements* ptr_source = ptr.FirstElement;
+			for (int i{ 0 }; i < ptr.lines; i++) {
 
-					std::cout << "Enter value " << std::endl;
+				for (int j{ 0 }; j < ptr.columns; j++) {
+
 					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
-					if (variable && j == columns - 1 && i == lines - 1) {
+					if (variable && j == ptr.columns-1  && i == ptr.lines-1 ) {
 
-						ptr->line = i;
-						ptr->column = j;
-						ptr->value = variable;
-						ptr->nextElement = ptr_source;
+						ptr_source->line = i;
+						ptr_source->column = j;
+						ptr_source->value = variable;
+						ptr_source->nextElement = ptr.FirstElement;
 					}
 					else if (variable) {
 
-						ptr = addElement(i, j, variable, ptr);
+						ptr_source = addElement(i, j, variable, ptr_source);
 					}
 
 				}
@@ -47,20 +43,22 @@ namespace MatrixProg {
 			pointer->nextElement = new MatrixElements;
 			return pointer->nextElement;
 		}
-		catch (...) {
-			delete pointer->nextElement;
-			throw;
+		catch (const std::bad_alloc&  ba) {
+
+			throw ba;
 		}
 
 	}
-	void MatrixOutput(MatrixElements* pointer, int lines, int columns) {
+	void MatrixOutput(const Matrix& pointer) {
 
-		std::cout << std::endl << "The matrix is..." << std::endl;
-		for (int i{ 0 }; i < lines; i++) {
-			for (int j{ 0 }; j < columns; j++) {
-				if (pointer->line == i && pointer->column == j) {
-					std::cout << pointer->value << "    ";
-					pointer = pointer->nextElement;
+		MatrixElements* ptr = pointer.FirstElement;
+		int i{ 0 }, j{ 0 };
+		for (i=0 ; i < pointer.lines; i++) {
+			for (j = 0; j < pointer.columns; j++) {
+
+				if (ptr->line == i && ptr->column == j) {
+					std::cout << ptr->value<<"    ";
+					ptr = ptr->nextElement;
 				}
 				else {
 					std::cout << "0    ";
@@ -71,9 +69,9 @@ namespace MatrixProg {
 
 	}
 
-	void MatrixErase(MatrixElements* pointer) {
+	void MatrixErase(Matrix& pointer) {
 
-		MatrixElements* ptr1 = pointer->nextElement;
+		MatrixElements* ptr1 = pointer.FirstElement->nextElement;
 		MatrixElements* ptr2 = ptr1;
 		while (ptr1->column!=0 && ptr1->line!=0) {
 
@@ -81,31 +79,32 @@ namespace MatrixProg {
 			delete ptr2;
 			ptr2 = ptr1;
 		}
-		delete pointer;
+		delete pointer.FirstElement;
 	}
 
-	int* CreateVector(MatrixElements* pointer, int lines) {
+	int* CreateVector(const Matrix& pointer) {
 
 		try {
-			int* vector = new int[lines]();
-			MatrixElements* ptr = pointer->nextElement;
-			MatrixElements* ptr_source = pointer;
-			int i{ 0 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
-			if (lines == 1) {
-				std::cout << "It is impossible to create vector, using one line" << std::endl;
-				delete[] vector;
+
+			if (pointer.lines == 1) {
+
 				return nullptr;
 			}
-			int j{ 1 };
-			while (i < lines) {
+			int* vector = new int[pointer.lines]();
+			MatrixElements* ptr = pointer.FirstElement->nextElement;
+			MatrixElements* ptr_source = pointer.FirstElement;
+			int i{ 0 }, j{ 1 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
+			while (i < pointer.lines) {
 
-				if (j == lines)
+				if (j == pointer.lines) {
 					j = 0;
+				}
 				while (ptr_source->line == i) {
-
-					while (ptr->line == i) {
-
+			
+					while (ptr->line==i) {
+						
 						ptr = ptr->nextElement;
+
 					}
 					while (ptr->line == j) {
 
@@ -127,8 +126,8 @@ namespace MatrixProg {
 					number_of_elements = 0;
 					number_of_elements_in_line = 0;
 				}
-				++i;
-				++j;
+				i++;
+				j++;
 			}
 			return vector;
 		}

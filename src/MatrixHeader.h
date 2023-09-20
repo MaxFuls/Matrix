@@ -34,11 +34,17 @@ namespace MatrixProg {
 		int value{ 0 };
 		MatrixElements* nextElement = nullptr;
 	};
+	struct Matrix {
+
+		int lines { 0 };
+		int columns { 0 };
+		MatrixElements* FirstElement = nullptr;
+	};
 	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer);
-	void MatrixInput(MatrixElements* ptr, int& lines, int& columns);
-	void MatrixOutput(MatrixElements* pointer, int lines, int columns);
-	void MatrixErase(MatrixElements* pointer);
-	int* CreateVector(MatrixElements* pointer, int lines);
+	void MatrixInput(const Matrix& ptr);
+	void MatrixOutput(const Matrix& pointer);
+	void MatrixErase(Matrix& pointer);
+	int* CreateVector(const Matrix& pointer);
 	void VectorOutput(int lines, int* vector);
 	void VectorSort(int* pointer, int lenght);
 	void BubbleSortAscending(int* pointer, int length);
