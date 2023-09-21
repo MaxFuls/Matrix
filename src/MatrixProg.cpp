@@ -1,6 +1,7 @@
 #include <iostream>
 #include "MatrixHeader.h"
 #include <limits>
+#include <vector>
 namespace MatrixProg {
 
 	void MatrixInput(const Matrix& ptr) {
@@ -8,27 +9,26 @@ namespace MatrixProg {
 		try {
 			int variable;
 			MatrixElements* ptr_source = ptr.FirstElement;
+			MatrixElements* ptr_for_last = ptr.FirstElement;
 			for (int i{ 0 }; i < ptr.lines; i++) {
 
 				for (int j{ 0 }; j < ptr.columns; j++) {
 
 					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
-					if (variable && j == ptr.columns-1  && i == ptr.lines-1 ) {
 
-						ptr_source->line = i;
-						ptr_source->column = j;
-						ptr_source->value = variable;
-						ptr_source->nextElement = ptr.FirstElement;
-					}
-					else if (variable) {
+					if (variable) {
 
+						ptr_for_last = ptr_source;
 						ptr_source = addElement(i, j, variable, ptr_source);
 					}
 
 				}
 			}
+			delete ptr_for_last->nextElement;
+			ptr_for_last->nextElement = ptr.FirstElement;
+			
 		}
-		catch (...) {
+		catch (const std::exception& e) {
 
 			throw;
 		}
@@ -53,44 +53,46 @@ namespace MatrixProg {
 
 		MatrixElements* ptr = pointer.FirstElement;
 		int i{ 0 }, j{ 0 };
-		for (i=0 ; i < pointer.lines; i++) {
-			for (j = 0; j < pointer.columns; j++) {
+		if (ptr) {
+			for (i = 0; i < pointer.lines; i++) {
+				for (j = 0; j < pointer.columns; j++) {
 
-				if (ptr->line == i && ptr->column == j) {
-					std::cout << ptr->value<<"    ";
-					ptr = ptr->nextElement;
+					if (ptr->line == i && ptr->column == j) {
+						std::cout << ptr->value << "    ";
+						ptr = ptr->nextElement;
+					}
+					else {
+						std::cout << "0    ";
+					}
 				}
-				else {
-					std::cout << "0    ";
-				}
+				std::cout << "" << std::endl;
 			}
-			std::cout << "" << std::endl;
+
 		}
-
 	}
-
 	void MatrixErase(Matrix& pointer) {
 
 		MatrixElements* ptr1 = pointer.FirstElement->nextElement;
 		MatrixElements* ptr2 = ptr1;
-		while (ptr1->column!=0 && ptr1->line!=0) {
+		std::cout << ptr1;
+		while (true) {
 
 			ptr1 = ptr2->nextElement;
 			delete ptr2;
 			ptr2 = ptr1;
+			if (ptr1->column == 0 && ptr1->line == 0) {
+				break;
+			}
 		}
 		delete pointer.FirstElement;
 	}
 
-	int* CreateVector(const Matrix& pointer) {
-
-		try {
+	void CreateVector(const Matrix& pointer, int* vector) {
 
 			if (pointer.lines == 1) {
 
-				return nullptr;
+				throw std::logic_error("It is impossible to create vector");
 			}
-			int* vector = new int[pointer.lines]();
 			MatrixElements* ptr = pointer.FirstElement->nextElement;
 			MatrixElements* ptr_source = pointer.FirstElement;
 			int i{ 0 }, j{ 1 }, number_of_elements{ 0 }, number_of_elements_in_line{ 0 };
@@ -129,12 +131,6 @@ namespace MatrixProg {
 				i++;
 				j++;
 			}
-			return vector;
-		}
-		catch (...) {
-
-			throw;
-		}
 	}
 	void VectorOutput(int lines, int* vector) {
 

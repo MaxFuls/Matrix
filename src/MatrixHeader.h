@@ -24,6 +24,7 @@ namespace MatrixProg {
 				return a;
 			else {
 				std::cout << "Repeat please" << std::endl;
+				std::cin.clear();
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			}
 		}
@@ -32,7 +33,7 @@ namespace MatrixProg {
 		int line{ 0 };
 		int column{ 0 };
 		int value{ 0 };
-		MatrixElements* nextElement = nullptr;
+		MatrixElements* nextElement;
 	};
 	struct Matrix {
 
@@ -40,16 +41,16 @@ namespace MatrixProg {
 		int columns { 0 };
 		MatrixElements* FirstElement = nullptr;
 	};
-	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer);
-	void MatrixInput(const Matrix& ptr);
-	void MatrixOutput(const Matrix& pointer);
-	void MatrixErase(Matrix& pointer);
-	int* CreateVector(const Matrix& pointer);
-	void VectorOutput(int lines, int* vector);
-	void VectorSort(int* pointer, int lenght);
-	void BubbleSortAscending(int* pointer, int length);
-	void BubbleSortDescending(int* pointer, int length);
-	void swap(int* first, int* second);
-	void EraseVector(int* pointer);
+	MatrixElements* addElement(int , int , int , MatrixElements* );
+	void MatrixInput(const Matrix& );
+	void MatrixOutput(const Matrix& );
+	void MatrixErase(Matrix& );
+	void CreateVector(const Matrix& , int*);
+	void VectorOutput(int , int* );
+	void VectorSort(int* , int );
+	void BubbleSortAscending(int* , int );
+	void BubbleSortDescending(int* , int );
+	void swap(int*, int*);
+	void EraseVector(int* );
 
 }
