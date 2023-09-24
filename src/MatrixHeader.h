@@ -7,9 +7,9 @@ namespace MatrixProg {
 	template<typename T>
 	T NumInput(T min, T max) {
 		T a;
+		char c;
 		while (true) {
 			std::cin >> a;
-			char c;
 			std::cin.get(c);
 			if (std::cin.eof())
 				throw std::runtime_error("Error of input: EOF");
@@ -24,8 +24,10 @@ namespace MatrixProg {
 				return a;
 			else {
 				std::cout << "Repeat please" << std::endl;
-				std::cin.clear();
-				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				if (c != '\n') {
+
+					std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+				}
 			}
 		}
 	}

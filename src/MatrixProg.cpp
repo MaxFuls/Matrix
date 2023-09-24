@@ -75,19 +75,26 @@ namespace MatrixProg {
 	}
 	void MatrixErase(Matrix& pointer) {
 
-		MatrixElements* ptr1;
-		MatrixElements* ptr2 = ptr1 = pointer.FirstElement;
+		MatrixElements* ptr1 = pointer.FirstElement;
+		MatrixElements* ptr2 = ptr1->nextElement;;
 		while (true) {
 
-			if (ptr1->nextElement->column == 0 && ptr1->nextElement->line==0) {
-				delete ptr1->nextElement;
-				delete ptr1;
-				break;
+			if (ptr2->value) {
+				if (!ptr2->column && !ptr2->line) {
+					delete ptr2;
+					break;
+				}
+				else {
+					ptr1 = ptr2->nextElement;
+					delete ptr2;
+					ptr2 = ptr1;
+				}
 			}
 			else {
-				ptr1 = ptr2->nextElement;
+				
 				delete ptr2;
-				ptr2 = ptr1;
+				delete pointer.FirstElement;
+				break;
 			}
 		}
 	}

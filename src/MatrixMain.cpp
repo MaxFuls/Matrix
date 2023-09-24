@@ -1,12 +1,12 @@
 #include <iostream>
 #include "MatrixHeader.h"
 #include "Leaks.h"
+
 int main() {
 
 	MatrixProg::Matrix& matrix = *(new MatrixProg::Matrix);
 	matrix.FirstElement = new MatrixProg::MatrixElements;
-	std::cout << sizeof(matrix)<<std::endl;
-	std::cout << sizeof(*(matrix.FirstElement)) << std::endl;
+
 
 	try{
 		std::cout << "Enter number of lines" << std::endl;
@@ -57,7 +57,7 @@ int main() {
 
 		std::cout << le.what() << std::endl;
 		MatrixProg::EraseVector(vector);
-		delete matrix.FirstElement;
+		MatrixProg::MatrixErase(matrix);
 		delete  &matrix;
 		return 1;
 	}

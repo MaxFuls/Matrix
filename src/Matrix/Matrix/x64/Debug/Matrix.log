@@ -1,3 +1,4 @@
-﻿  MatrixProg.cpp
-D:\Git\Programs\src\MatrixProg.cpp(34,32): warning C4101: e: неиспользованная локальная переменная
+﻿  MatrixMain.cpp
+D:\Git\Programs\src\MatrixMain.cpp(64,31): warning C4101: ba: неиспользованная локальная переменная
+D:\Git\Programs\src\MatrixMain.cpp(72,31): warning C4101: ex: неиспользованная локальная переменная
   Matrix.vcxproj -> D:\Git\Programs\src\Matrix\x64\Debug\Matrix.exe
