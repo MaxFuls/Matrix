@@ -39,7 +39,7 @@ namespace MatrixProg {
 
 		int lines { 0 };
 		int columns { 0 };
-		MatrixElements* FirstElement = nullptr;
+		MatrixElements* FirstElement;
 	};
 	MatrixElements* addElement(int , int , int , MatrixElements* );
 	void MatrixInput(const Matrix& );

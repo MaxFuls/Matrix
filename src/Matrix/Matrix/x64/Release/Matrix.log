@@ -1,10 +1,4 @@
 ﻿  MatrixMain.cpp
-D:\Git\Programs\src\MatrixMain.cpp(42,20): warning C4101: er: неиспользованная локальная переменная
-D:\Git\Programs\src\MatrixMain.cpp(51,31): warning C4101: ba: неиспользованная локальная переменная
-D:\Git\Programs\src\MatrixMain.cpp(69,31): warning C4101: ex: неиспользованная локальная переменная
-  Создание кода
-  1 of 117 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
-  Создание кода завершено
-  Matrix.vcxproj -> D:\Git\Programs\src\Matrix\x64\Release\Matrix.exe
+D:\Git\Programs\src\Leaks.h(7,10): fatal  error C1083: Не удается открыть файл включение: vld.h: No such file or directory,
+  MatrixProg.cpp
+D:\Git\Programs\src\MatrixProg.cpp(35,32): warning C4101: e: неиспользованная локальная переменная

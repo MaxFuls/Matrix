@@ -1,21 +1,20 @@
 #include <iostream>
 #include "MatrixHeader.h"
-//#define __CRTDBG_MAP_ALLOC
-//#include <crtdbg.h>
-//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__,__LINE__)
-//#define new DEBUG_NEW
-
+#include "Leaks.h"
 int main() {
 
 	MatrixProg::Matrix& matrix = *(new MatrixProg::Matrix);
 	matrix.FirstElement = new MatrixProg::MatrixElements;
+	std::cout << sizeof(matrix)<<std::endl;
+	std::cout << sizeof(*(matrix.FirstElement)) << std::endl;
+
 	try{
 		std::cout << "Enter number of lines" << std::endl;
 		matrix.lines = MatrixProg::NumInput<int>(0, std::numeric_limits<int>::max());
 		std::cout << "Enter number of columns" << std::endl;
 		matrix.columns = MatrixProg::NumInput<int>(0, std::numeric_limits<int>::max());
 	}
-	catch(std::runtime_error& re){
+	catch(const std::runtime_error& re){
 
 		std::cout << re.what() << std::endl;
 		delete matrix.FirstElement;
@@ -36,17 +35,22 @@ int main() {
 		MatrixProg::VectorOutput(matrix.lines, vector);
 		MatrixProg::MatrixErase(matrix);
 		MatrixProg::EraseVector(vector);
-		delete& (matrix);
-		//_CrtDumpMemoryLeaks();
+		delete &matrix;
 		return 0;
 	}
 	catch (const std::runtime_error& re) {
 
 		std::cout << re.what() << std::endl;
-		MatrixProg::MatrixErase(matrix);
-		MatrixProg::EraseVector(vector);
-		delete& (matrix);
-		//_CrtDumpMemoryLeaks();
+		if (matrix.FirstElement->value == 0) {
+			
+			delete matrix.FirstElement;
+			delete[] vector;
+		}
+		else {
+			MatrixProg::MatrixErase(matrix);
+			MatrixProg::EraseVector(vector);
+		}
+		delete &matrix;
 		return 1;
 	}
 	catch (const std::logic_error& le) {
@@ -54,9 +58,8 @@ int main() {
 		std::cout << le.what() << std::endl;
 		MatrixProg::EraseVector(vector);
 		delete matrix.FirstElement;
-		delete  &(matrix);
-		//_CrtDumpMemoryLeaks();
-		return 0;
+		delete  &matrix;
+		return 1;
 	}
 	catch (const std::bad_alloc& ba){
 	
@@ -64,16 +67,14 @@ int main() {
 		MatrixProg::MatrixErase(matrix);
 		MatrixProg::EraseVector(vector);
 		delete &(matrix);
-		//_CrtDumpMemoryLeaks();
 		return 1;
 	}
-	//catch (const std::exception& ex) {
+	catch (const std::exception& ex) {
 
-	//	std::cout << "Something gets wrong" << std::endl;
-	//	MatrixProg::MatrixErase(matrix);
-	//	MatrixProg::EraseVector(vector);
-	//	delete &(matrix);
-	//	_CrtDumpMemoryLeaks();
-	//	return 1;
-	//}
+		std::cout << "Something gets wrong" << std::endl;
+		MatrixProg::MatrixErase(matrix);
+		MatrixProg::EraseVector(vector);
+		delete &(matrix);
+		return 1;
+	}
 }

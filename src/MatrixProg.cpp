@@ -2,6 +2,7 @@
 #include "MatrixHeader.h"
 #include <limits>
 #include <vector>
+
 namespace MatrixProg {
 
 	void MatrixInput(const Matrix& ptr) {
@@ -24,8 +25,10 @@ namespace MatrixProg {
 
 				}
 			}
-			delete ptr_for_last->nextElement;
-			ptr_for_last->nextElement = ptr.FirstElement;
+			if (ptr.FirstElement->value != 0) {
+				delete ptr_for_last->nextElement;
+				ptr_for_last->nextElement = ptr.FirstElement;
+			}
 			
 		}
 		catch (const std::exception& e) {
@@ -53,11 +56,11 @@ namespace MatrixProg {
 
 		MatrixElements* ptr = pointer.FirstElement;
 		int i{ 0 }, j{ 0 };
-		if (ptr) {
+		if (true) {
 			for (i = 0; i < pointer.lines; i++) {
 				for (j = 0; j < pointer.columns; j++) {
 
-					if (ptr->line == i && ptr->column == j) {
+					if (ptr->line == i && ptr->column == j && ptr->value!=0) {
 						std::cout << ptr->value << "    ";
 						ptr = ptr->nextElement;
 					}
@@ -72,19 +75,21 @@ namespace MatrixProg {
 	}
 	void MatrixErase(Matrix& pointer) {
 
-		MatrixElements* ptr1 = pointer.FirstElement->nextElement;
-		MatrixElements* ptr2 = ptr1;
-		std::cout << ptr1;
+		MatrixElements* ptr1;
+		MatrixElements* ptr2 = ptr1 = pointer.FirstElement;
 		while (true) {
 
-			ptr1 = ptr2->nextElement;
-			delete ptr2;
-			ptr2 = ptr1;
-			if (ptr1->column == 0 && ptr1->line == 0) {
+			if (ptr1->nextElement->column == 0 && ptr1->nextElement->line==0) {
+				delete ptr1->nextElement;
+				delete ptr1;
 				break;
 			}
+			else {
+				ptr1 = ptr2->nextElement;
+				delete ptr2;
+				ptr2 = ptr1;
+			}
 		}
-		delete pointer.FirstElement;
 	}
 
 	void CreateVector(const Matrix& pointer, int* vector) {
@@ -92,6 +97,10 @@ namespace MatrixProg {
 			if (pointer.lines == 1) {
 
 				throw std::logic_error("It is impossible to create vector");
+			}
+			if (pointer.FirstElement->value == 0) {
+
+				throw std::logic_error("There are not no-null elements. It is impossible to create vector");
 			}
 			MatrixElements* ptr = pointer.FirstElement->nextElement;
 			MatrixElements* ptr_source = pointer.FirstElement;

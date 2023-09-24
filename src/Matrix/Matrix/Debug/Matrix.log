@@ -1,0 +1,5 @@
+﻿  MatrixMain.cpp
+D:\Git\Programs\src\Leaks.h(7,10): fatal  error C1083: Не удается открыть файл включение: vld.h: No such file or directory,
+  MatrixProg.cpp
+D:\Git\Programs\src\MatrixProg.cpp(35,32): warning C4101: e: неиспользованная локальная переменная
+  Создание кода...
