@@ -1,55 +1,41 @@
 #include <iostream>
 #include "MatrixHeader.h"
 #include <limits>
-#include <vector>
 
 namespace MatrixProg {
 
 	void MatrixInput(const Matrix& ptr) {
 
-		try {
-			int variable;
-			MatrixElements* ptr_source = ptr.FirstElement;
-			MatrixElements* ptr_for_last = ptr.FirstElement;
-			for (int i{ 0 }; i < ptr.lines; i++) {
+		int variable;
+		MatrixElements* ptr_source = ptr.FirstElement;
+		MatrixElements* ptr_for_last = ptr.FirstElement;
+		for (int i{ 0 }; i < ptr.lines; i++) {
 
-				for (int j{ 0 }; j < ptr.columns; j++) {
+			for (int j{ 0 }; j < ptr.columns; j++) {
 
-					variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+				variable = NumInput<int>(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
-					if (variable) {
+				if (variable) {
 
-						ptr_for_last = ptr_source;
-						ptr_source = addElement(i, j, variable, ptr_source);
-					}
-
+					ptr_for_last = ptr_source;
+					ptr_source = addElement(i, j, variable, ptr_source);
 				}
-			}
-			if (ptr.FirstElement->value != 0) {
-				delete ptr_for_last->nextElement;
-				ptr_for_last->nextElement = ptr.FirstElement;
-			}
-			
-		}
-		catch (const std::exception& e) {
 
-			throw;
+			}
+		}
+		if (ptr.FirstElement->value != 0) {
+			delete ptr_for_last->nextElement;
+			ptr_for_last->nextElement = ptr.FirstElement;
 		}
 
 	}
 	MatrixElements* addElement(int line, int column, int value, MatrixElements* pointer) {
 
-		try {
-			pointer->line = line;
-			pointer->column = column;
-			pointer->value = value;
-			pointer->nextElement = new MatrixElements;
-			return pointer->nextElement;
-		}
-		catch (const std::bad_alloc&  ba) {
-
-			throw ba;
-		}
+		pointer->line = line;
+		pointer->column = column;
+		pointer->value = value;
+		pointer->nextElement = new MatrixElements;
+		return pointer->nextElement;
 
 	}
 	void MatrixOutput(const Matrix& pointer) {
@@ -76,25 +62,31 @@ namespace MatrixProg {
 	void MatrixErase(Matrix& pointer) {
 
 		MatrixElements* ptr1 = pointer.FirstElement;
-		MatrixElements* ptr2 = ptr1->nextElement;;
-		while (true) {
+		MatrixElements* ptr2 = ptr1->nextElement;
+		if (ptr1->value == 0) {
 
-			if (ptr2->value) {
-				if (!ptr2->column && !ptr2->line) {
-					delete ptr2;
-					break;
+			delete ptr1;
+		}
+		else {
+			while (true) {
+
+				if (ptr2->value) {
+					if (!ptr2->column && !ptr2->line) {
+						delete ptr2;
+						break;
+					}
+					else {
+						ptr1 = ptr2->nextElement;
+						delete ptr2;
+						ptr2 = ptr1;
+					}
 				}
 				else {
-					ptr1 = ptr2->nextElement;
+
 					delete ptr2;
-					ptr2 = ptr1;
+					delete pointer.FirstElement;
+					break;
 				}
-			}
-			else {
-				
-				delete ptr2;
-				delete pointer.FirstElement;
-				break;
 			}
 		}
 	}

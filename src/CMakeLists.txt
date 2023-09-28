@@ -1,11 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.27)
 
 project(MatrixProg)
 
 set(CMAKE_CXX_STANDART 20)
 
-add_library(MatrixProg MatrixProg.cpp MatrixHeader.h)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-link_libraries(MatrixProg)
+add_library(MatrixLib MatrixProg.cpp MatrixHeader.h)
 
-add_executable(main MatrixMain.cpp)
+link_libraries(MatrixLib)
+
+add_executable(Matrix MatrixMain.cpp)

@@ -35,7 +35,8 @@ namespace MatrixProg {
 		int line{ 0 };
 		int column{ 0 };
 		int value{ 0 };
-		MatrixElements* nextElement;
+		MatrixElements* nextElement
+			;
 	};
 	struct Matrix {
 

@@ -4,7 +4,7 @@
 
 int main() {
 
-	MatrixProg::Matrix& matrix = *(new MatrixProg::Matrix);
+	MatrixProg::Matrix matrix;
 	matrix.FirstElement = new MatrixProg::MatrixElements;
 
 
@@ -18,7 +18,6 @@ int main() {
 
 		std::cout << re.what() << std::endl;
 		delete matrix.FirstElement;
-		delete  &matrix;
 		return 1;
 	}
 	int* vector = new int[matrix.lines]();
@@ -35,22 +34,13 @@ int main() {
 		MatrixProg::VectorOutput(matrix.lines, vector);
 		MatrixProg::MatrixErase(matrix);
 		MatrixProg::EraseVector(vector);
-		delete &matrix;
 		return 0;
 	}
 	catch (const std::runtime_error& re) {
 
 		std::cout << re.what() << std::endl;
-		if (matrix.FirstElement->value == 0) {
-			
-			delete matrix.FirstElement;
-			delete[] vector;
-		}
-		else {
-			MatrixProg::MatrixErase(matrix);
-			MatrixProg::EraseVector(vector);
-		}
-		delete &matrix;
+		MatrixProg::MatrixErase(matrix);
+		MatrixProg::EraseVector(vector);
 		return 1;
 	}
 	catch (const std::logic_error& le) {
@@ -58,23 +48,13 @@ int main() {
 		std::cout << le.what() << std::endl;
 		MatrixProg::EraseVector(vector);
 		MatrixProg::MatrixErase(matrix);
-		delete  &matrix;
-		return 1;
+		return 0;
 	}
 	catch (const std::bad_alloc& ba){
 	
 		std::cerr << "Not enough memory" << std::endl;
 		MatrixProg::MatrixErase(matrix);
 		MatrixProg::EraseVector(vector);
-		delete &(matrix);
-		return 1;
-	}
-	catch (const std::exception& ex) {
-
-		std::cout << "Something gets wrong" << std::endl;
-		MatrixProg::MatrixErase(matrix);
-		MatrixProg::EraseVector(vector);
-		delete &(matrix);
 		return 1;
 	}
 }
